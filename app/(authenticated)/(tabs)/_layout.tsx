@@ -39,13 +39,14 @@ export default function TabsLayout() {
         }}
       />
       <Tabs.Screen
-        name="pofile"
+        name="profile"
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="bus" color={color} size={size} />
+            <Ionicons name="person" color={color} size={size} />
           ),
         }}
       />
+      
     </Tabs>
   );
 }
