@@ -1,6 +1,12 @@
+import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+} from "react-native";
 
 export default function SignUpScreen() {
   const router = useRouter();
@@ -14,26 +20,41 @@ export default function SignUpScreen() {
       setError("All fields are required");
       return;
     }
+
     setError("");
-    // Navigate to verify page and pass password via params
-    router.push({
-      pathname: "./(auth)/verify",
-      params: { password },
-    });
+    router.replace("/home");
   };
 
   return (
-    <View style={styles.container}>
+    <LinearGradient
+      colors={["#6a11cb", "#2575fc"]}
+      style={styles.container}
+    >
       <Text style={styles.title}>Create Account</Text>
 
-      <TextInput placeholder="Name" value={name} onChangeText={setName} style={styles.input} />
-      <TextInput placeholder="Email" value={email} onChangeText={setEmail} style={styles.input} />
+      <TextInput
+        placeholder="Name"
+        placeholderTextColor="#ddd"
+        style={styles.input}
+        value={name}
+        onChangeText={setName}
+      />
+
+      <TextInput
+        placeholder="Email"
+        placeholderTextColor="#ddd"
+        style={styles.input}
+        value={email}
+        onChangeText={setEmail}
+      />
+
       <TextInput
         placeholder="Password"
-        value={password}
-        onChangeText={setPassword}
+        placeholderTextColor="#ddd"
         style={styles.input}
         secureTextEntry
+        value={password}
+        onChangeText={setPassword}
       />
 
       {error ? <Text style={styles.error}>{error}</Text> : null}
@@ -41,28 +62,48 @@ export default function SignUpScreen() {
       <TouchableOpacity style={styles.button} onPress={handleSignUp}>
         <Text style={styles.buttonText}>Sign Up</Text>
       </TouchableOpacity>
-    </View>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#fff", padding: 24, justifyContent: "center" },
-  title: { fontSize: 28, fontWeight: "700", textAlign: "center", marginBottom: 32 },
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    padding: 24,
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: "700",
+    color: "#fff",
+    textAlign: "center",
+    marginBottom: 32,
+  },
   input: {
     height: 50,
     borderWidth: 1,
-    borderColor: "#ddd",
+    borderColor: "#ffffff80",
     borderRadius: 8,
     paddingHorizontal: 16,
+    color: "#fff",
     marginBottom: 16,
   },
   button: {
     height: 50,
-    backgroundColor: "#16a34a",
+    backgroundColor: "#ffffff",
     borderRadius: 8,
     justifyContent: "center",
     alignItems: "center",
+    marginTop: 8,
   },
-  buttonText: { color: "#fff", fontSize: 16, fontWeight: "600" },
-  error: { color: "red", textAlign: "center", marginBottom: 12 },
+  buttonText: {
+    color: "#6a11cb",
+    fontSize: 16,
+    fontWeight: "600",
+  },
+  error: {
+    color: "#ffcccc",
+    textAlign: "center",
+    marginBottom: 12,
+  },
 });
