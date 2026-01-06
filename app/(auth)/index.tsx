@@ -1,91 +1,61 @@
+import { useAuth } from "@/context/AuthContext";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import { StyleSheet, Text, TextInput, TouchableOpacity } from "react-native";
+import { Text, TextInput, TouchableOpacity } from "react-native";
 
 export default function LoginScreen() {
+  const { login } = useAuth();
   const router = useRouter();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleLogin = () => {
-    // later: real auth
-    router.replace("/(authenticated)/(tabs)/home");
+    // mock auth for now
+    login(email || "test@wishverse.app");
   };
 
   return (
     <LinearGradient
       colors={["#6a11cb", "#2575fc"]}
-      style={styles.container}
+      className="flex-1 justify-center px-6"
     >
-      <Text style={styles.title}>Wish-Verse</Text>
+      <Text className="text-3xl font-bold text-white text-center mb-8">
+        Wish-Verse
+      </Text>
 
       <TextInput
         placeholder="Email"
         placeholderTextColor="#ddd"
-        style={styles.input}
         value={email}
         onChangeText={setEmail}
+        className="h-12 border border-white/50 rounded-lg px-4 text-white mb-4"
       />
 
       <TextInput
         placeholder="Password"
         placeholderTextColor="#ddd"
-        style={styles.input}
         secureTextEntry
         value={password}
         onChangeText={setPassword}
+        className="h-12 border border-white/50 rounded-lg px-4 text-white mb-4"
       />
 
-      <TouchableOpacity style={styles.button} onPress={handleLogin}>
-        <Text style={styles.buttonText}>Login</Text>
+      <TouchableOpacity
+        onPress={handleLogin}
+        className="h-12 bg-white rounded-lg justify-center items-center mt-2"
+      >
+        <Text className="text-purple-700 font-semibold text-base">
+          Login
+        </Text>
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => router.push("/(auth)/signup")}>
-        <Text style={styles.link}>Create an account</Text>
+        <Text className="text-white text-center mt-4">
+          Create an account
+        </Text>
       </TouchableOpacity>
     </LinearGradient>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    padding: 24,
-  },
-  title: {
-    fontSize: 32,
-    fontWeight: "700",
-    color: "#fff",
-    textAlign: "center",
-    marginBottom: 32,
-  },
-  input: {
-    height: 50,
-    borderWidth: 1,
-    borderColor: "#ffffff80",
-    borderRadius: 8,
-    paddingHorizontal: 16,
-    color: "#fff",
-    marginBottom: 16,
-  },
-  button: {
-    height: 50,
-    backgroundColor: "#ffffff",
-    borderRadius: 8,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 8,
-  },
-  buttonText: {
-    color: "#6a11cb",
-    fontSize: 16,
-    fontWeight: "600",
-  },
-  link: {
-    color: "#fff",
-    textAlign: "center",
-    marginTop: 16,
-  },
-});
