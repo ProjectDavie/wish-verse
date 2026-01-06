@@ -1,10 +1,16 @@
+import { useAuth } from "@/context/AuthContext";
 import { Ionicons } from "@expo/vector-icons";
-import { Tabs } from "expo-router";
+import { Redirect, Tabs } from "expo-router";
 import React from "react";
 
 export default function TabsLayout() {
+  const { isAuthenticated } = useAuth();
+
+  if (!isAuthenticated) {
+    return <Redirect href="/(auth)" />;
+  }
+
   return (
-    // removed per-screen `title` and set an empty headerTitle to hide titles
     <Tabs screenOptions={{ headerShown: false }}>
       <Tabs.Screen
         name="home"
@@ -46,7 +52,6 @@ export default function TabsLayout() {
           ),
         }}
       />
-      
     </Tabs>
   );
 }
