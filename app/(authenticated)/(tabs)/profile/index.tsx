@@ -1,9 +1,11 @@
+import { useAuth } from "@/context/AuthContext";
 import { LinearGradient } from "expo-linear-gradient";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function ProfileScreen() {
   const insets = useSafeAreaInsets();
+  const { logout } = useAuth();
 
   return (
     <LinearGradient
@@ -55,7 +57,7 @@ export default function ProfileScreen() {
         </View>
 
         {/* Action Buttons */}
-        <View className="px-6 flex-row gap-4 mb-10">
+        <View className="px-6 flex-row gap-4 mb-6">
           <TouchableOpacity className="flex-1 bg-white/20 py-4 rounded-2xl items-center">
             <Text className="text-white font-semibold">
               Edit Profile
@@ -65,6 +67,18 @@ export default function ProfileScreen() {
           <TouchableOpacity className="flex-1 bg-purple-900/40 py-4 rounded-2xl items-center">
             <Text className="text-white font-semibold">
               Settings
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Logout Button */}
+        <View className="px-6 mb-10">
+          <TouchableOpacity
+            onPress={logout}
+            className="bg-red-500/80 py-4 rounded-2xl items-center"
+          >
+            <Text className="text-white font-semibold">
+              Logout
             </Text>
           </TouchableOpacity>
         </View>
