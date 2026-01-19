@@ -1,8 +1,17 @@
-import { ScrollView, Text, View } from "react-native";
+import { useEffect, useRef, useState } from "react";
+import {
+  Animated,
+  Pressable,
+  RefreshControl,
+  ScrollView,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-// Sample friends data
-const friendsList = [
+// Initial data
+const INITIAL_FRIENDS = [
   { id: 1, name: "Alice", status: "Online" },
   { id: 2, name: "Bob", status: "Offline" },
   { id: 3, name: "Charlie", status: "Online" },
@@ -12,36 +21,161 @@ const friendsList = [
 ];
 
 export default function FriendsScreen() {
-  return (
-    <SafeAreaView className="flex-1 bg-purple-50">
-      <ScrollView
-        contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 24, paddingBottom: 40 }}
-        showsVerticalScrollIndicator={false}
-      >
-        <Text className="text-3xl font-bold text-purple-800 mb-6 text-center">
-          Friends
-        </Text>
+  const [friends, setFriends] = useState(INITIAL_FRIENDS);
+  const [refreshing, setRefreshing] = useState(false);
+  const fadeAnim = useRef(new Animated.Value(0)).current;
 
-        {friendsList.map((friend) => (
-          <View
-            key={friend.id}
-            className="bg-white rounded-xl p-4 mb-4 shadow flex-row justify-between items-center"
-          >
+  // Entry animation
+  useEffect(() => {
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 600,
+      useNativeDriver: true,
+    }).start();
+  }, []);
+
+  // Simulated real-time status update
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setFriends((prev) =>
+        prev.map((f) =>
+          Math.random() > 0.7
+            ? {
+                ...f,
+                status: f.status === "Online" ? "Offline" : "Online",
+              }
+            : f,
+        ),
+      );
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setFriends(INITIAL_FRIENDS);
+      setRefreshing(false);
+    }, 1000);
+  };
+
+  const removeFriend = (id: number) => {
+    setFriends((prev) => prev.filter((f) => f.id !== id));
+  };
+
+  const StatusBadge = ({ status }: { status: string }) => {
+    const color =
+      status === "Online"
+        ? "bg-green-100 text-green-600"
+        : status === "Busy"
+          ? "bg-yellow-100 text-yellow-600"
+          : "bg-gray-100 text-gray-400";
+
+    return (
+      <Text className={`px-3 py-1 rounded-full text-xs font-semibold ${color}`}>
+        {status}
+      </Text>
+    );
+  };
+
+  const FriendCard = ({ friend }: { friend: any }) => (
+    <View className="bg-white rounded-2xl p-4 mb-4 shadow">
+      <View className="flex-row items-center justify-between">
+        {/* Left */}
+        <View className="flex-row items-center gap-4">
+          <View className="h-12 w-12 rounded-full bg-purple-600 items-center justify-center">
+            <Text className="text-white font-bold text-lg">
+              {friend.name.charAt(0)}
+            </Text>
+          </View>
+
+          <View>
             <Text className="text-purple-900 font-semibold text-lg">
               {friend.name}
             </Text>
-            <Text className={`text-sm font-medium ${
-              friend.status === "Online"
-                ? "text-green-500"
-                : friend.status === "Offline"
-                ? "text-gray-400"
-                : "text-yellow-500"
-            }`}>
-              {friend.status}
-            </Text>
+            <StatusBadge status={friend.status} />
           </View>
-        ))}
-      </ScrollView>
+        </View>
+
+        {/* Actions */}
+        <View className="flex-row gap-2">
+          <Pressable className="px-3 py-2 rounded-lg bg-purple-100">
+            <Text className="text-purple-700 text-xs font-semibold">Chat</Text>
+          </Pressable>
+
+          <Pressable
+            onPress={() => removeFriend(friend.id)}
+            className="px-3 py-2 rounded-lg bg-red-100"
+          >
+            <Text className="text-red-600 text-xs font-semibold">Remove</Text>
+          </Pressable>
+        </View>
+      </View>
+    </View>
+  );
+
+  const online = friends.filter((f) => f.status === "Online");
+  const offline = friends.filter((f) => f.status !== "Online");
+
+  return (
+    <SafeAreaView className="flex-1 bg-purple-50">
+      <Animated.View style={{ opacity: fadeAnim }} className="flex-1">
+        <ScrollView
+          className="px-4"
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+          showsVerticalScrollIndicator={false}
+        >
+          {/* Header */}
+          <Text className="text-3xl font-extrabold text-purple-800 mt-6 mb-4 text-center">
+            Friends
+          </Text>
+
+          {/* Search */}
+          <View className="bg-white rounded-xl px-4 py-3 mb-6 shadow">
+            <TextInput
+              placeholder="Search friends..."
+              placeholderTextColor="#9ca3af"
+              className="text-purple-900"
+            />
+          </View>
+
+          {/* Stats */}
+          <View className="flex-row justify-between mb-6">
+            <View className="bg-white rounded-xl p-4 flex-1 mr-2 shadow">
+              <Text className="text-sm text-gray-400">Online</Text>
+              <Text className="text-2xl font-bold text-green-500">
+                {online.length}
+              </Text>
+            </View>
+
+            <View className="bg-white rounded-xl p-4 flex-1 ml-2 shadow">
+              <Text className="text-sm text-gray-400">Offline</Text>
+              <Text className="text-2xl font-bold text-gray-400">
+                {offline.length}
+              </Text>
+            </View>
+          </View>
+
+          {/* Online */}
+          <Text className="text-lg font-bold text-purple-700 mb-3">Online</Text>
+          {online.map((friend) => (
+            <FriendCard key={friend.id} friend={friend} />
+          ))}
+
+          {/* Offline */}
+          <Text className="text-lg font-bold text-purple-700 mt-6 mb-3">
+            Offline / Busy
+          </Text>
+          {offline.map((friend) => (
+            <FriendCard key={friend.id} friend={friend} />
+          ))}
+
+          <View className="h-10" />
+        </ScrollView>
+      </Animated.View>
     </SafeAreaView>
   );
 }
