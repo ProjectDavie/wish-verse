@@ -10,5 +10,5 @@ export default function AuthLayout() {
   }
 
   // ❌ If not logged in, stay in auth flow
-  return <Stack />;
+  return <Stack screenOptions={{ headerShown: false }} />;
 }

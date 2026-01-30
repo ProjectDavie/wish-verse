@@ -24,9 +24,7 @@ export default function ProfileScreen() {
         {/* Header Section */}
         <View className="items-center mb-10">
           <View className="h-32 w-32 rounded-full bg-purple-300 items-center justify-center mb-4">
-            <Text className="text-4xl font-bold text-purple-900">
-              DV
-            </Text>
+            <Text className="text-4xl font-bold text-purple-900">DV</Text>
           </View>
 
           <Text className="text-white text-3xl font-extrabold">
@@ -59,15 +57,11 @@ export default function ProfileScreen() {
         {/* Action Buttons */}
         <View className="px-6 flex-row gap-4 mb-6">
           <TouchableOpacity className="flex-1 bg-white/20 py-4 rounded-2xl items-center">
-            <Text className="text-white font-semibold">
-              Edit Profile
-            </Text>
+            <Text className="text-white font-semibold">Edit Profile</Text>
           </TouchableOpacity>
 
           <TouchableOpacity className="flex-1 bg-purple-900/40 py-4 rounded-2xl items-center">
-            <Text className="text-white font-semibold">
-              Settings
-            </Text>
+            <Text className="text-white font-semibold">Settings</Text>
           </TouchableOpacity>
         </View>
 
@@ -77,39 +71,25 @@ export default function ProfileScreen() {
             onPress={logout}
             className="bg-red-500/80 py-4 rounded-2xl items-center"
           >
-            <Text className="text-white font-semibold">
-              Logout
-            </Text>
+            <Text className="text-white font-semibold">Logout</Text>
           </TouchableOpacity>
         </View>
 
         {/* Info Sections */}
         <View className="px-6 space-y-4">
           <View className="bg-white/10 rounded-2xl p-5">
-            <Text className="text-purple-200 text-sm mb-1">
-              Email
-            </Text>
-            <Text className="text-white font-medium">
-              davie@wishverse.app
-            </Text>
+            <Text className="text-purple-200 text-sm mb-1">Email</Text>
+            <Text className="text-white font-medium">davie@wishverse.app</Text>
           </View>
 
           <View className="bg-white/10 rounded-2xl p-5">
-            <Text className="text-purple-200 text-sm mb-1">
-              Account Type
-            </Text>
-            <Text className="text-white font-medium">
-              Creator
-            </Text>
+            <Text className="text-purple-200 text-sm mb-1">Account Type</Text>
+            <Text className="text-white font-medium">Creator</Text>
           </View>
 
           <View className="bg-white/10 rounded-2xl p-5">
-            <Text className="text-purple-200 text-sm mb-1">
-              Joined
-            </Text>
-            <Text className="text-white font-medium">
-              January 2025
-            </Text>
+            <Text className="text-purple-200 text-sm mb-1">Joined</Text>
+            <Text className="text-white font-medium">January 2025</Text>
           </View>
         </View>
       </ScrollView>
