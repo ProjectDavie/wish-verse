@@ -1,6 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import {
-  Animated,
   Pressable,
   RefreshControl,
   ScrollView,
@@ -23,34 +22,6 @@ const INITIAL_FRIENDS = [
 export default function FriendsScreen() {
   const [friends, setFriends] = useState(INITIAL_FRIENDS);
   const [refreshing, setRefreshing] = useState(false);
-  const fadeAnim = useRef(new Animated.Value(0)).current;
-
-  // Entry animation
-  useEffect(() => {
-    Animated.timing(fadeAnim, {
-      toValue: 1,
-      duration: 600,
-      useNativeDriver: true,
-    }).start();
-  }, []);
-
-  // Simulated real-time status update
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setFriends((prev) =>
-        prev.map((f) =>
-          Math.random() > 0.7
-            ? {
-                ...f,
-                status: f.status === "Online" ? "Offline" : "Online",
-              }
-            : f,
-        ),
-      );
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, []);
 
   const onRefresh = () => {
     setRefreshing(true);
@@ -120,62 +91,60 @@ export default function FriendsScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-purple-50">
-      <Animated.View style={{ opacity: fadeAnim }} className="flex-1">
-        <ScrollView
-          className="px-4"
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
-          showsVerticalScrollIndicator={false}
-        >
-          {/* Header */}
-          <Text className="text-3xl font-extrabold text-purple-800 mt-6 mb-4 text-center">
-            Friends
-          </Text>
+      <ScrollView
+        className="px-4"
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+        showsVerticalScrollIndicator={false}
+      >
+        {/* Header */}
+        <Text className="text-3xl font-extrabold text-purple-800 mt-6 mb-4 text-center">
+          Friends
+        </Text>
 
-          {/* Search */}
-          <View className="bg-white rounded-xl px-4 py-3 mb-6 shadow">
-            <TextInput
-              placeholder="Search friends..."
-              placeholderTextColor="#9ca3af"
-              className="text-purple-900"
-            />
+        {/* Search */}
+        <View className="bg-white rounded-xl px-4 py-3 mb-6 shadow">
+          <TextInput
+            placeholder="Search friends..."
+            placeholderTextColor="#9ca3af"
+            className="text-purple-900"
+          />
+        </View>
+
+        {/* Stats */}
+        <View className="flex-row justify-between mb-6">
+          <View className="bg-white rounded-xl p-4 flex-1 mr-2 shadow">
+            <Text className="text-sm text-gray-400">Online</Text>
+            <Text className="text-2xl font-bold text-green-500">
+              {online.length}
+            </Text>
           </View>
 
-          {/* Stats */}
-          <View className="flex-row justify-between mb-6">
-            <View className="bg-white rounded-xl p-4 flex-1 mr-2 shadow">
-              <Text className="text-sm text-gray-400">Online</Text>
-              <Text className="text-2xl font-bold text-green-500">
-                {online.length}
-              </Text>
-            </View>
-
-            <View className="bg-white rounded-xl p-4 flex-1 ml-2 shadow">
-              <Text className="text-sm text-gray-400">Offline</Text>
-              <Text className="text-2xl font-bold text-gray-400">
-                {offline.length}
-              </Text>
-            </View>
+          <View className="bg-white rounded-xl p-4 flex-1 ml-2 shadow">
+            <Text className="text-sm text-gray-400">Offline</Text>
+            <Text className="text-2xl font-bold text-gray-400">
+              {offline.length}
+            </Text>
           </View>
+        </View>
 
-          {/* Online */}
-          <Text className="text-lg font-bold text-purple-700 mb-3">Online</Text>
-          {online.map((friend) => (
-            <FriendCard key={friend.id} friend={friend} />
-          ))}
+        {/* Online */}
+        <Text className="text-lg font-bold text-purple-700 mb-3">Online</Text>
+        {online.map((friend) => (
+          <FriendCard key={friend.id} friend={friend} />
+        ))}
 
-          {/* Offline */}
-          <Text className="text-lg font-bold text-purple-700 mt-6 mb-3">
-            Offline / Busy
-          </Text>
-          {offline.map((friend) => (
-            <FriendCard key={friend.id} friend={friend} />
-          ))}
+        {/* Offline */}
+        <Text className="text-lg font-bold text-purple-700 mt-6 mb-3">
+          Offline / Busy
+        </Text>
+        {offline.map((friend) => (
+          <FriendCard key={friend.id} friend={friend} />
+        ))}
 
-          <View className="h-10" />
-        </ScrollView>
-      </Animated.View>
+        <View className="h-10" />
+      </ScrollView>
     </SafeAreaView>
   );
 }
