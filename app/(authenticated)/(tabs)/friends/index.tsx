@@ -1,3 +1,4 @@
+import { LinearGradient } from "expo-linear-gradient";
 import { useState } from "react";
 import {
   Pressable,
@@ -51,7 +52,7 @@ export default function FriendsScreen() {
   };
 
   const FriendCard = ({ friend }: { friend: any }) => (
-    <View className="bg-white rounded-2xl p-4 mb-4 shadow">
+    <View className="bg-white/10 rounded-2xl p-4 mb-4">
       <View className="flex-row items-center justify-between">
         {/* Left */}
         <View className="flex-row items-center gap-4">
@@ -62,7 +63,7 @@ export default function FriendsScreen() {
           </View>
 
           <View>
-            <Text className="text-purple-900 font-semibold text-lg">
+            <Text className="text-white font-semibold text-lg">
               {friend.name}
             </Text>
             <StatusBadge status={friend.status} />
@@ -71,15 +72,15 @@ export default function FriendsScreen() {
 
         {/* Actions */}
         <View className="flex-row gap-2">
-          <Pressable className="px-3 py-2 rounded-lg bg-purple-100">
-            <Text className="text-purple-700 text-xs font-semibold">Chat</Text>
+          <Pressable className="px-3 py-2 rounded-lg bg-white/20">
+            <Text className="text-white text-xs font-semibold">Chat</Text>
           </Pressable>
 
           <Pressable
             onPress={() => removeFriend(friend.id)}
-            className="px-3 py-2 rounded-lg bg-red-100"
+            className="px-3 py-2 rounded-lg bg-red-500/80"
           >
-            <Text className="text-red-600 text-xs font-semibold">Remove</Text>
+            <Text className="text-white text-xs font-semibold">Remove</Text>
           </Pressable>
         </View>
       </View>
@@ -90,61 +91,72 @@ export default function FriendsScreen() {
   const offline = friends.filter((f) => f.status !== "Online");
 
   return (
-    <SafeAreaView className="flex-1 bg-purple-50">
-      <ScrollView
-        className="px-4"
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-        showsVerticalScrollIndicator={false}
-      >
-        {/* Header */}
-        <Text className="text-3xl font-extrabold text-purple-800 mt-6 mb-4 text-center">
-          Friends
-        </Text>
+    <LinearGradient
+      colors={["#5B21B6", "#6D28D9", "#7C3AED"]}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 0, y: 1 }}
+      className="flex-1"
+    >
+      <SafeAreaView className="flex-1">
+        <ScrollView
+          className="px-6"
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingBottom: 40 }}
+        >
+          {/* Header */}
+          <Text className="text-3xl font-extrabold text-white mt-6 mb-4 text-center">
+            Friends
+          </Text>
+          <Text className="text-purple-200 text-sm mb-6 text-center">
+            Connect with your friends and see their status
+          </Text>
 
-        {/* Search */}
-        <View className="bg-white rounded-xl px-4 py-3 mb-6 shadow">
-          <TextInput
-            placeholder="Search friends..."
-            placeholderTextColor="#9ca3af"
-            className="text-purple-900"
-          />
-        </View>
-
-        {/* Stats */}
-        <View className="flex-row justify-between mb-6">
-          <View className="bg-white rounded-xl p-4 flex-1 mr-2 shadow">
-            <Text className="text-sm text-gray-400">Online</Text>
-            <Text className="text-2xl font-bold text-green-500">
-              {online.length}
-            </Text>
+          {/* Search */}
+          <View className="bg-white/10 rounded-xl px-4 py-3 mb-6">
+            <TextInput
+              placeholder="Search friends..."
+              placeholderTextColor="#d1d5db"
+              className="text-white"
+            />
           </View>
 
-          <View className="bg-white rounded-xl p-4 flex-1 ml-2 shadow">
-            <Text className="text-sm text-gray-400">Offline</Text>
-            <Text className="text-2xl font-bold text-gray-400">
-              {offline.length}
-            </Text>
+          {/* Stats */}
+          <View className="flex-row justify-between mb-6">
+            <View className="bg-white/10 rounded-xl p-4 flex-1 mr-2 items-center">
+              <Text className="text-purple-200 text-sm">Online</Text>
+              <Text className="text-white font-bold text-2xl">
+                {online.length}
+              </Text>
+            </View>
+
+            <View className="bg-white/10 rounded-xl p-4 flex-1 ml-2 items-center">
+              <Text className="text-purple-200 text-sm">Offline</Text>
+              <Text className="text-white font-bold text-2xl">
+                {offline.length}
+              </Text>
+            </View>
           </View>
-        </View>
 
-        {/* Online */}
-        <Text className="text-lg font-bold text-purple-700 mb-3">Online</Text>
-        {online.map((friend) => (
-          <FriendCard key={friend.id} friend={friend} />
-        ))}
+          {/* Online */}
+          <Text className="text-white font-bold text-lg mb-3">Online</Text>
+          {online.map((friend) => (
+            <FriendCard key={friend.id} friend={friend} />
+          ))}
 
-        {/* Offline */}
-        <Text className="text-lg font-bold text-purple-700 mt-6 mb-3">
-          Offline / Busy
-        </Text>
-        {offline.map((friend) => (
-          <FriendCard key={friend.id} friend={friend} />
-        ))}
+          {/* Offline */}
+          <Text className="text-white font-bold text-lg mt-6 mb-3">
+            Offline / Busy
+          </Text>
+          {offline.map((friend) => (
+            <FriendCard key={friend.id} friend={friend} />
+          ))}
 
-        <View className="h-10" />
-      </ScrollView>
-    </SafeAreaView>
+          <View className="h-16" />
+        </ScrollView>
+      </SafeAreaView>
+    </LinearGradient>
   );
 }
