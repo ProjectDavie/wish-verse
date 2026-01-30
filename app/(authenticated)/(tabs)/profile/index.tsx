@@ -66,7 +66,7 @@ export default function ProfileScreen() {
         </View>
 
         {/* Logout Button */}
-        <View className="px-6 mb-10">
+        <View className="px-6 mb-12">
           <TouchableOpacity
             onPress={logout}
             className="bg-red-500/80 py-4 rounded-2xl items-center"
@@ -75,8 +75,8 @@ export default function ProfileScreen() {
           </TouchableOpacity>
         </View>
 
-        {/* Info Sections */}
-        <View className="px-6 space-y-4">
+        {/* Info Sections with improved spacing */}
+        <View className="px-6 space-y-6">
           <View className="bg-white/10 rounded-2xl p-5">
             <Text className="text-purple-200 text-sm mb-1">Email</Text>
             <Text className="text-white font-medium">davie@wishverse.app</Text>
@@ -92,6 +92,9 @@ export default function ProfileScreen() {
             <Text className="text-white font-medium">January 2025</Text>
           </View>
         </View>
+
+        {/* Extra bottom padding for scroll comfort */}
+        <View className="h-16" />
       </ScrollView>
     </LinearGradient>
   );
