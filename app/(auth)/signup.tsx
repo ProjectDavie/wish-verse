@@ -1,12 +1,7 @@
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-} from "react-native";
+import { Text, TextInput, TouchableOpacity } from "react-native";
 
 export default function SignUpScreen() {
   const router = useRouter();
@@ -20,90 +15,62 @@ export default function SignUpScreen() {
       setError("All fields are required");
       return;
     }
-
     setError("");
     router.replace("/home");
   };
 
   return (
     <LinearGradient
-      colors={["#6a11cb", "#2575fc"]}
-      style={styles.container}
+      colors={["#5B21B6", "#6D28D9", "#7C3AED"]}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 0, y: 1 }}
+      className="flex-1 justify-center px-6"
     >
-      <Text style={styles.title}>Create Account</Text>
+      <Text className="text-3xl font-extrabold text-white text-center mb-8">
+        Wish-Verse ✨
+      </Text>
 
       <TextInput
         placeholder="Name"
         placeholderTextColor="#ddd"
-        style={styles.input}
         value={name}
         onChangeText={setName}
+        className="h-12 border border-white/50 rounded-lg px-4 text-white mb-4"
       />
 
       <TextInput
         placeholder="Email"
         placeholderTextColor="#ddd"
-        style={styles.input}
         value={email}
         onChangeText={setEmail}
+        className="h-12 border border-white/50 rounded-lg px-4 text-white mb-4"
       />
 
       <TextInput
         placeholder="Password"
         placeholderTextColor="#ddd"
-        style={styles.input}
         secureTextEntry
         value={password}
         onChangeText={setPassword}
+        className="h-12 border border-white/50 rounded-lg px-4 text-white mb-4"
       />
 
-      {error ? <Text style={styles.error}>{error}</Text> : null}
+      {error ? (
+        <Text className="text-red-300 text-center mb-4">{error}</Text>
+      ) : null}
 
-      <TouchableOpacity style={styles.button} onPress={handleSignUp}>
-        <Text style={styles.buttonText}>Sign Up</Text>
+      <TouchableOpacity
+        onPress={handleSignUp}
+        className="h-12 bg-white rounded-lg justify-center items-center mt-2"
+      >
+        <Text className="text-purple-900 font-semibold text-base">Sign Up</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={() => router.push("/(auth)")} className="mt-4">
+        <Text className="text-white text-center">
+          Already have an account? Login
+        </Text>
       </TouchableOpacity>
     </LinearGradient>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    padding: 24,
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: "700",
-    color: "#fff",
-    textAlign: "center",
-    marginBottom: 32,
-  },
-  input: {
-    height: 50,
-    borderWidth: 1,
-    borderColor: "#ffffff80",
-    borderRadius: 8,
-    paddingHorizontal: 16,
-    color: "#fff",
-    marginBottom: 16,
-  },
-  button: {
-    height: 50,
-    backgroundColor: "#ffffff",
-    borderRadius: 8,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 8,
-  },
-  buttonText: {
-    color: "#6a11cb",
-    fontSize: 16,
-    fontWeight: "600",
-  },
-  error: {
-    color: "#ffcccc",
-    textAlign: "center",
-    marginBottom: 12,
-  },
-});

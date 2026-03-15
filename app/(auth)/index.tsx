@@ -18,11 +18,13 @@ export default function LoginScreen() {
 
   return (
     <LinearGradient
-      colors={["#6a11cb", "#2575fc"]}
+      colors={["#5B21B6", "#6D28D9", "#7C3AED"]}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 0, y: 1 }}
       className="flex-1 justify-center px-6"
     >
-      <Text className="text-3xl font-bold text-white text-center mb-8">
-        Wish-Verse
+      <Text className="text-3xl font-extrabold text-white text-center mb-8">
+        Wish-Verse ✨
       </Text>
 
       <TextInput
@@ -46,15 +48,11 @@ export default function LoginScreen() {
         onPress={handleLogin}
         className="h-12 bg-white rounded-lg justify-center items-center mt-2"
       >
-        <Text className="text-purple-700 font-semibold text-base">
-          Login
-        </Text>
+        <Text className="text-purple-900 font-semibold text-base">Login</Text>
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => router.push("/(auth)/signup")}>
-        <Text className="text-white text-center mt-4">
-          Create an account
-        </Text>
+        <Text className="text-white text-center mt-4">Create an account</Text>
       </TouchableOpacity>
     </LinearGradient>
   );
