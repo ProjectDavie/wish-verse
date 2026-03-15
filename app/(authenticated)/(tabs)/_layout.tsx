@@ -2,16 +2,36 @@ import { useAuth } from "@/context/AuthContext";
 import { Ionicons } from "@expo/vector-icons";
 import { Redirect, Tabs } from "expo-router";
 import React from "react";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function TabsLayout() {
   const { isAuthenticated } = useAuth();
+  const insets = useSafeAreaInsets();
 
   if (!isAuthenticated) {
     return <Redirect href="/(auth)" />;
   }
 
+  // Theme colors
+  const inactiveColor = "#9D7EDB"; // lighter purple
+  const activeColor = "#5B21B6"; // darker purple
+
   return (
-    <Tabs screenOptions={{ headerShown: false }}>
+    <Tabs
+      screenOptions={{
+        headerShown: false,
+        tabBarActiveTintColor: activeColor,
+        tabBarInactiveTintColor: inactiveColor,
+        tabBarStyle: {
+          backgroundColor: "#F3E8FF", // light purple
+          borderTopColor: "transparent", // remove top border
+          height: 65 + insets.bottom, // raise tab bar above home button
+          paddingBottom: insets.bottom + 8, // add safe area padding
+          paddingTop: 8,
+          position: "absolute", // optional: makes it float above home indicator
+        },
+      }}
+    >
       <Tabs.Screen
         name="home"
         options={{
@@ -32,7 +52,7 @@ export default function TabsLayout() {
         name="friends"
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="ticket" color={color} size={size} />
+            <Ionicons name="people" color={color} size={size} />
           ),
         }}
       />
@@ -40,7 +60,7 @@ export default function TabsLayout() {
         name="alerts"
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="bus" color={color} size={size} />
+            <Ionicons name="notifications" color={color} size={size} />
           ),
         }}
       />
