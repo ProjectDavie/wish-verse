@@ -1,11 +1,11 @@
-import { LinearGradient } from "expo-linear-gradient";
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import AlertCard from "../../../../components/alerts/AlertCard";
 
 export default function AlertsScreen() {
   const insets = useSafeAreaInsets();
 
-  // Dummy alerts data (replace with API/data later)
+  // Dummy alerts data
   const alerts = [
     {
       id: 1,
@@ -30,12 +30,7 @@ export default function AlertsScreen() {
   ];
 
   return (
-    <LinearGradient
-      colors={["#5B21B6", "#6D28D9", "#7C3AED"]}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 0, y: 1 }}
-      className="flex-1"
-    >
+    <View className="flex-1 bg-purple-50">
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{
@@ -46,8 +41,10 @@ export default function AlertsScreen() {
       >
         {/* Header */}
         <View className="mb-8">
-          <Text className="text-white text-3xl font-extrabold">Alerts</Text>
-          <Text className="text-purple-200 text-sm mt-1">
+          <Text className="text-purple-900 text-3xl font-extrabold">
+            Alerts
+          </Text>
+          <Text className="text-purple-500 text-sm mt-1">
             Stay updated with the latest notifications
           </Text>
         </View>
@@ -55,33 +52,26 @@ export default function AlertsScreen() {
         {/* Alerts List */}
         <View className="space-y-4">
           {alerts.map((alert) => (
-            <TouchableOpacity
+            <AlertCard
               key={alert.id}
-              className="bg-white/10 rounded-2xl p-5"
-            >
-              <Text className="text-white text-lg font-semibold mb-1">
-                {alert.title}
-              </Text>
-              <Text className="text-purple-200 text-sm mb-2">
-                {alert.description}
-              </Text>
-              <Text className="text-purple-300 text-xs">{alert.time}</Text>
-            </TouchableOpacity>
+              title={alert.title}
+              description={alert.description}
+              time={alert.time}
+            />
           ))}
         </View>
 
-        {/* No Alerts Placeholder (Optional) */}
+        {/* No Alerts Placeholder */}
         {alerts.length === 0 && (
           <View className="mt-16 items-center">
-            <Text className="text-purple-200 text-lg">
+            <Text className="text-purple-500 text-lg">
               No alerts at the moment
             </Text>
           </View>
         )}
 
-        {/* Extra bottom padding */}
         <View className="h-16" />
       </ScrollView>
-    </LinearGradient>
+    </View>
   );
 }
