@@ -1,134 +1,78 @@
 import { useState } from "react";
-import { Pressable, ScrollView, Text, View } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-
-// Sample discover data
-const DISCOVER_ITEMS = [
-  {
-    id: 1,
-    title: "Travel Dreams",
-    category: "Travel",
-    wishes: ["Paris Trip", "Bali Retreat", "Tokyo Visit"],
-  },
-  {
-    id: 2,
-    title: "Tech Wishlist",
-    category: "Technology",
-    wishes: ["MacBook Pro", "Mechanical Keyboard", "Smart Watch"],
-  },
-  {
-    id: 3,
-    title: "Fitness Goals",
-    category: "Health",
-    wishes: ["Gym Membership", "Yoga Mat", "Running Shoes"],
-  },
-  {
-    id: 4,
-    title: "Home Essentials",
-    category: "Lifestyle",
-    wishes: ["Standing Desk", "Coffee Machine", "Air Purifier"],
-  },
-];
-
-const CATEGORIES = ["All", "Travel", "Technology", "Health", "Lifestyle"];
+import SearchBar from "../../../../components/discover/SearchBar";
 
 export default function DiscoverScreen() {
-  const [selectedCategory, setSelectedCategory] = useState("All");
-  const [expandedId, setExpandedId] = useState<number | null>(null);
+  const [searchResults, setSearchResults] = useState<string[]>([]);
 
-  const filteredItems =
-    selectedCategory === "All"
-      ? DISCOVER_ITEMS
-      : DISCOVER_ITEMS.filter((item) => item.category === selectedCategory);
+  const handleSearch = (query: string) => {
+    // For demo purposes, generate fake search results
+    const results = query
+      ? [`${query} Wishlist 1`, `${query} Wishlist 2`, `${query} Wishlist 3`]
+      : [];
+    setSearchResults(results);
+  };
 
   return (
     <SafeAreaView className="flex-1 bg-purple-50">
       <ScrollView className="px-4" showsVerticalScrollIndicator={false}>
         {/* Header */}
-        <Text className="text-3xl font-extrabold text-purple-800 mt-6 mb-4 text-center">
+        <Text className="text-3xl font-extrabold text-purple-800 mt-6 mb-2 text-center">
           Discover
         </Text>
-
-        <Text className="text-sm text-purple-500 mb-6 text-center">
+        <Text className="text-sm text-purple-500 mb-4 text-center">
           Explore public wishlists from the community
         </Text>
 
-        {/* Category Dropdown */}
-        <View className="bg-white rounded-xl shadow mb-6">
-          <Text className="px-4 pt-4 text-sm font-semibold text-gray-400">
-            Category
-          </Text>
+        {/* Search Bar */}
+        <SearchBar onSearch={handleSearch} />
 
-          {CATEGORIES.map((category) => (
-            <Pressable
-              key={category}
-              onPress={() => setSelectedCategory(category)}
-              className={`px-4 py-3 border-t border-gray-100 ${
-                selectedCategory === category ? "bg-purple-100" : ""
-              }`}
-            >
-              <Text
-                className={`font-medium ${
-                  selectedCategory === category
-                    ? "text-purple-700"
-                    : "text-gray-700"
-                }`}
+        {/* Sample Content */}
+        {searchResults.length > 0 ? (
+          <View className="space-y-4">
+            {searchResults.map((item, index) => (
+              <View
+                key={index}
+                className="bg-white p-4 rounded-2xl shadow flex-row justify-between items-center"
               >
-                {category}
-              </Text>
-            </Pressable>
-          ))}
-        </View>
-
-        {/* Discover List */}
-        {filteredItems.map((item) => {
-          const isExpanded = expandedId === item.id;
-
-          return (
-            <View
-              key={item.id}
-              className="bg-white rounded-2xl p-4 mb-4 shadow"
-            >
-              {/* Header */}
-              <Pressable
-                onPress={() => setExpandedId(isExpanded ? null : item.id)}
-                className="flex-row justify-between items-center"
-              >
-                <View>
-                  <Text className="text-lg font-semibold text-purple-900">
-                    {item.title}
-                  </Text>
-                  <Text className="text-xs text-gray-400 mt-1">
-                    {item.category}
-                  </Text>
-                </View>
-
-                <Text className="text-purple-600 font-bold text-xl">
-                  {isExpanded ? "−" : "+"}
+                <Text className="text-purple-900 font-semibold text-lg">
+                  {item}
                 </Text>
-              </Pressable>
-
-              {/* Expanded Wishes */}
-              {isExpanded && (
-                <View className="mt-4 border-t border-gray-100 pt-4">
-                  {item.wishes.map((wish, index) => (
-                    <Pressable key={index} className="py-2">
-                      <Text className="text-purple-700 font-medium">
-                        • {wish}
-                      </Text>
-                    </Pressable>
-                  ))}
-
-                  <Pressable className="mt-4 bg-purple-600 rounded-xl py-3">
-                    <Text className="text-white font-semibold text-center">
-                      Save Wishlist
-                    </Text>
-                  </Pressable>
-                </View>
-              )}
+                <Text className="text-purple-600 font-bold text-xl">+</Text>
+              </View>
+            ))}
+          </View>
+        ) : (
+          <View className="mt-8 space-y-6">
+            <View className="bg-white p-6 rounded-2xl shadow">
+              <Text className="text-purple-900 font-semibold text-lg mb-2">
+                Travel Dreams
+              </Text>
+              <Text className="text-gray-400">
+                Explore community wishlists for amazing travel experiences
+              </Text>
             </View>
-          );
-        })}
+
+            <View className="bg-white p-6 rounded-2xl shadow">
+              <Text className="text-purple-900 font-semibold text-lg mb-2">
+                Tech Wishlist
+              </Text>
+              <Text className="text-gray-400">
+                Discover popular gadgets and tech items people are wishing for
+              </Text>
+            </View>
+
+            <View className="bg-white p-6 rounded-2xl shadow">
+              <Text className="text-purple-900 font-semibold text-lg mb-2">
+                Lifestyle Picks
+              </Text>
+              <Text className="text-gray-400">
+                See trending lifestyle and home essentials from our users
+              </Text>
+            </View>
+          </View>
+        )}
 
         <View className="h-10" />
       </ScrollView>
