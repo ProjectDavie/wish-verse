@@ -1,152 +1,129 @@
-import { Pressable, ScrollView, Text, View } from "react-native";
+import React from "react";
+import { SafeAreaView, Text, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function Home() {
-  // Extended dummy data for more scrollable content
-  const communityWishes = [
-    {
-      id: "1",
-      title: "Paris Trip",
-      description: "Dreaming of Eiffel Tower 🌟",
-    },
-    {
-      id: "2",
-      title: "New Laptop",
-      description: "Time to upgrade my setup 💻",
-    },
-    { id: "3", title: "Yoga Retreat", description: "Peaceful week in Bali 🧘‍♂️" },
-    { id: "4", title: "Photography Gear", description: "Capture memories 📸" },
-    {
-      id: "5",
-      title: "Cooking Classes",
-      description: "Master some recipes 🍳",
-    },
-    {
-      id: "6",
-      title: "Mountain Hike",
-      description: "Adventure in the Alps 🏔️",
-    },
-  ];
-
-  const myWishlist = [
-    { id: "1", title: "Standing Desk", status: "Pending" },
-    { id: "2", title: "Air Purifier", status: "Purchased" },
-    { id: "3", title: "Smart Watch", status: "Pending" },
-    { id: "4", title: "Noise Cancelling Headphones", status: "Pending" },
-    { id: "5", title: "Ergonomic Chair", status: "Purchased" },
-    { id: "6", title: "LED Desk Lamp", status: "Pending" },
-  ];
+  const insets = useSafeAreaInsets();
 
   return (
-    <View className="flex-1 bg-purple-50">
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 40 }}
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#f3e8ff" }}>
+      {/* Top inset visualization */}
+      {insets.top > 0 && (
+        <View
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            height: insets.top,
+            backgroundColor: "rgba(107,21,168,0.5)",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Text style={{ color: "white", fontWeight: "bold" }}>
+            Top inset: {insets.top.toFixed(0)} px
+          </Text>
+        </View>
+      )}
+
+      {/* Bottom inset visualization */}
+      {insets.bottom > 0 && (
+        <View
+          style={{
+            position: "absolute",
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: insets.bottom,
+            backgroundColor: "rgba(107,21,168,0.5)",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Text style={{ color: "white", fontWeight: "bold" }}>
+            Bottom inset: {insets.bottom.toFixed(0)} px
+          </Text>
+        </View>
+      )}
+
+      {/* Left inset visualization */}
+      {insets.left > 0 && (
+        <View
+          style={{
+            position: "absolute",
+            top: 0,
+            bottom: 0,
+            left: 0,
+            width: insets.left,
+            backgroundColor: "rgba(147,51,234,0.5)",
+            justifyContent: "center",
+            alignItems: "center",
+            transform: [{ rotate: "-90deg" }],
+          }}
+        >
+          <Text style={{ color: "white", fontWeight: "bold" }}>
+            Left: {insets.left.toFixed(0)} px
+          </Text>
+        </View>
+      )}
+
+      {/* Right inset visualization */}
+      {insets.right > 0 && (
+        <View
+          style={{
+            position: "absolute",
+            top: 0,
+            bottom: 0,
+            right: 0,
+            width: insets.right,
+            backgroundColor: "rgba(147,51,234,0.5)",
+            justifyContent: "center",
+            alignItems: "center",
+            transform: [{ rotate: "90deg" }],
+          }}
+        >
+          <Text style={{ color: "white", fontWeight: "bold" }}>
+            Right: {insets.right.toFixed(0)} px
+          </Text>
+        </View>
+      )}
+
+      {/* Main content */}
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+          paddingTop: insets.top,
+          paddingBottom: insets.bottom,
+          paddingLeft: insets.left,
+          paddingRight: insets.right,
+        }}
       >
-        {/* Header */}
-        <Text className="text-3xl font-extrabold text-purple-800 mt-6 mb-2 text-center">
-          Welcome Back!
+        <Text
+          style={{
+            fontSize: 24,
+            fontWeight: "bold",
+            color: "#6b21a8",
+            textAlign: "center",
+          }}
+        >
+          Safe Area Visualization
         </Text>
-        <Text className="text-purple-500 text-sm mb-6 text-center">
-          Explore your wishlist and community wishes
+        <Text
+          style={{
+            fontSize: 16,
+            color: "#6b21a8",
+            textAlign: "center",
+            marginTop: 16,
+            paddingHorizontal: 16,
+          }}
+        >
+          The colored bars show where the safe area insets start. Purple at the
+          top/bottom and lighter purple at the sides.
         </Text>
-
-        {/* Community Wishes Section */}
-        <Text className="text-purple-900 text-xl font-bold mb-4">
-          Community Wishes
-        </Text>
-        <View className="space-y-4 mb-8">
-          {communityWishes.map((wish) => (
-            <View key={wish.id} className="bg-white rounded-2xl p-4 shadow">
-              <Text className="text-purple-900 font-semibold text-lg mb-1">
-                {wish.title}
-              </Text>
-              <Text className="text-purple-500 text-sm">
-                {wish.description}
-              </Text>
-              <Pressable className="mt-3 bg-purple-100 py-2 rounded-xl items-center">
-                <Text className="text-purple-800 font-semibold text-sm">
-                  View Details
-                </Text>
-              </Pressable>
-            </View>
-          ))}
-        </View>
-
-        {/* My Wishlist Section */}
-        <Text className="text-purple-900 text-xl font-bold mb-4">
-          My Wishlist
-        </Text>
-        <View className="space-y-4 mb-8">
-          {myWishlist.map((item) => (
-            <View key={item.id} className="bg-white rounded-2xl p-4 shadow">
-              <Text className="text-purple-900 font-semibold text-lg mb-1">
-                {item.title}
-              </Text>
-              <Text className="text-purple-500 text-sm mb-2">
-                Status: {item.status}
-              </Text>
-              <Pressable className="mt-3 bg-purple-100 py-2 rounded-xl items-center">
-                <Text className="text-purple-800 font-semibold text-sm">
-                  Update
-                </Text>
-              </Pressable>
-            </View>
-          ))}
-        </View>
-
-        {/* Extra Content: More Community Wishes */}
-        <Text className="text-purple-900 text-xl font-bold mb-4">
-          Trending Wishes
-        </Text>
-        <View className="space-y-4 mb-8">
-          {communityWishes.map((wish) => (
-            <View
-              key={`trending-${wish.id}`}
-              className="bg-white rounded-2xl p-4 shadow"
-            >
-              <Text className="text-purple-900 font-semibold text-lg mb-1">
-                {wish.title}
-              </Text>
-              <Text className="text-purple-500 text-sm">
-                {wish.description}
-              </Text>
-              <Pressable className="mt-3 bg-purple-100 py-2 rounded-xl items-center">
-                <Text className="text-purple-800 font-semibold text-sm">
-                  View Details
-                </Text>
-              </Pressable>
-            </View>
-          ))}
-        </View>
-
-        {/* Extra Content: More My Wishlist */}
-        <Text className="text-purple-900 text-xl font-bold mb-4">
-          Wishlist Updates
-        </Text>
-        <View className="space-y-4 mb-8">
-          {myWishlist.map((item) => (
-            <View
-              key={`update-${item.id}`}
-              className="bg-white rounded-2xl p-4 shadow"
-            >
-              <Text className="text-purple-900 font-semibold text-lg mb-1">
-                {item.title}
-              </Text>
-              <Text className="text-purple-500 text-sm mb-2">
-                Status: {item.status}
-              </Text>
-              <Pressable className="mt-3 bg-purple-100 py-2 rounded-xl items-center">
-                <Text className="text-purple-800 font-semibold text-sm">
-                  Update
-                </Text>
-              </Pressable>
-            </View>
-          ))}
-        </View>
-
-        {/* Extra scroll padding */}
-        <View className="h-16" />
-      </ScrollView>
-    </View>
+      </View>
+    </SafeAreaView>
   );
 }
