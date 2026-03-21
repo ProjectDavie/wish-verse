@@ -1,129 +1,136 @@
-import React from "react";
-import { SafeAreaView, Text, View } from "react-native";
+import { useRouter } from "expo-router";
+import { useRef, useState } from "react";
+import {
+  Animated,
+  Dimensions,
+  FlatList,
+  Pressable,
+  Text,
+  View,
+} from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+const { width } = Dimensions.get("window");
+
 export default function Home() {
+  const scrollY = useRef(new Animated.Value(0)).current;
   const insets = useSafeAreaInsets();
+  const router = useRouter();
+
+  // Profile bubble animation
+  const bubbleOpacity = scrollY.interpolate({
+    inputRange: [50, 120],
+    outputRange: [0, 1],
+    extrapolate: "clamp",
+  });
+  const bubbleScale = scrollY.interpolate({
+    inputRange: [50, 120],
+    outputRange: [0.6, 1],
+    extrapolate: "clamp",
+  });
+
+  // Carousel data
+  const carouselData = [
+    { id: "1", title: "Trip to Japan 🇯🇵" },
+    { id: "2", title: "MacBook Pro 💻" },
+    { id: "3", title: "Dream Car 🚗" },
+    { id: "4", title: "Luxury Watch ⌚" },
+    { id: "5", title: "Private Island 🏝️" },
+  ];
+  const [activeIndex, setActiveIndex] = useState(0);
+  const handleCarouselScroll = (event) => {
+    const index = Math.round(event.nativeEvent.contentOffset.x / width);
+    setActiveIndex(index);
+  };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#f3e8ff" }}>
-      {/* Top inset visualization */}
-      {insets.top > 0 && (
-        <View
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            height: insets.top,
-            backgroundColor: "rgba(107,21,168,0.5)",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Text style={{ color: "white", fontWeight: "bold" }}>
-            Top inset: {insets.top.toFixed(0)} px
-          </Text>
-        </View>
-      )}
-
-      {/* Bottom inset visualization */}
-      {insets.bottom > 0 && (
-        <View
-          style={{
-            position: "absolute",
-            bottom: 0,
-            left: 0,
-            right: 0,
-            height: insets.bottom,
-            backgroundColor: "rgba(107,21,168,0.5)",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Text style={{ color: "white", fontWeight: "bold" }}>
-            Bottom inset: {insets.bottom.toFixed(0)} px
-          </Text>
-        </View>
-      )}
-
-      {/* Left inset visualization */}
-      {insets.left > 0 && (
-        <View
-          style={{
-            position: "absolute",
-            top: 0,
-            bottom: 0,
-            left: 0,
-            width: insets.left,
-            backgroundColor: "rgba(147,51,234,0.5)",
-            justifyContent: "center",
-            alignItems: "center",
-            transform: [{ rotate: "-90deg" }],
-          }}
-        >
-          <Text style={{ color: "white", fontWeight: "bold" }}>
-            Left: {insets.left.toFixed(0)} px
-          </Text>
-        </View>
-      )}
-
-      {/* Right inset visualization */}
-      {insets.right > 0 && (
-        <View
-          style={{
-            position: "absolute",
-            top: 0,
-            bottom: 0,
-            right: 0,
-            width: insets.right,
-            backgroundColor: "rgba(147,51,234,0.5)",
-            justifyContent: "center",
-            alignItems: "center",
-            transform: [{ rotate: "90deg" }],
-          }}
-        >
-          <Text style={{ color: "white", fontWeight: "bold" }}>
-            Right: {insets.right.toFixed(0)} px
-          </Text>
-        </View>
-      )}
-
-      {/* Main content */}
+    <View className="flex-1 bg-white">
+      {/* ---------------- Header Layer ---------------- */}
       <View
         style={{
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-          paddingTop: insets.top,
-          paddingBottom: insets.bottom,
-          paddingLeft: insets.left,
-          paddingRight: insets.right,
+          paddingTop: insets.top + 16,
+          paddingHorizontal: 20,
+          paddingBottom: 16,
+          zIndex: 50,
         }}
+        className="bg-white"
       >
-        <Text
+        <Text className="text-4xl font-extrabold text-black">Hello User,</Text>
+        <Text className="text-2xl text-black mt-2">Make a wish ✨</Text>
+
+        {/* Profile Bubble */}
+        <Animated.View
           style={{
-            fontSize: 24,
-            fontWeight: "bold",
-            color: "#6b21a8",
-            textAlign: "center",
+            position: "absolute",
+            top: insets.top + 16,
+            right: 20,
+            opacity: bubbleOpacity,
+            transform: [{ scale: bubbleScale }],
           }}
         >
-          Safe Area Visualization
-        </Text>
-        <Text
-          style={{
-            fontSize: 16,
-            color: "#6b21a8",
-            textAlign: "center",
-            marginTop: 16,
-            paddingHorizontal: 16,
-          }}
-        >
-          The colored bars show where the safe area insets start. Purple at the
-          top/bottom and lighter purple at the sides.
-        </Text>
+          <Pressable
+            onPress={() => router.push("/(authenticated)/(tabs)/profile")}
+            className="w-12 h-12 rounded-full bg-black justify-center items-center"
+          >
+            <Text className="text-white font-bold">U</Text>
+          </Pressable>
+        </Animated.View>
       </View>
-    </SafeAreaView>
+
+      {/* ---------------- Scrollable Content ---------------- */}
+      <Animated.ScrollView
+        scrollEventThrottle={16}
+        onScroll={Animated.event(
+          [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+          { useNativeDriver: false },
+        )}
+        contentContainerStyle={{ paddingTop: 20, paddingBottom: 40 }}
+      >
+        {/* ---------------- Recently Added Section ---------------- */}
+        <View className="bg-white">
+          <View className="bg-white px-6 py-4">
+            <Text className="text-xl font-bold text-black">Recently Added</Text>
+          </View>
+
+          {/* Carousel */}
+          <FlatList
+            data={carouselData}
+            horizontal
+            pagingEnabled
+            showsHorizontalScrollIndicator={false}
+            keyExtractor={(item) => item.id}
+            onMomentumScrollEnd={handleCarouselScroll}
+            renderItem={({ item }) => (
+              <View style={{ width }} className="px-6">
+                <View className="h-[400px] rounded-3xl bg-gray-100 justify-end p-6">
+                  <Text className="text-xl font-semibold text-black">
+                    {item.title}
+                  </Text>
+                </View>
+              </View>
+            )}
+          />
+
+          {/* Carousel Dots */}
+          <View className="flex-row justify-center mt-3 mb-6 space-x-2">
+            {carouselData.map((_, index) => (
+              <View
+                key={index}
+                className={`h-2 rounded-full ${
+                  activeIndex === index ? "w-6 bg-black" : "w-2 bg-gray-300"
+                }`}
+              />
+            ))}
+          </View>
+        </View>
+
+        {/* ---------------- Next Section (Sticky) ---------------- */}
+        <View className="bg-white px-6 py-4" style={{ zIndex: 10 }}>
+          <Text className="text-xl font-bold text-black">Trending</Text>
+        </View>
+
+        <View className="h-[600px] bg-gray-100 mx-6 rounded-2xl mb-10" />
+      </Animated.ScrollView>
+    </View>
   );
 }

@@ -1,7 +1,6 @@
 import { useAuth } from "@/context/AuthContext";
 import { Ionicons } from "@expo/vector-icons";
 import { Redirect, Tabs } from "expo-router";
-import React from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function TabsLayout() {
@@ -19,58 +18,58 @@ export default function TabsLayout() {
   return (
     <Tabs
       screenOptions={{
-        headerShown: false,
-        tabBarActiveTintColor: activeColor,
-        tabBarInactiveTintColor: inactiveColor,
-        tabBarStyle: {
-          backgroundColor: "#F3E8FF", // light purple
-          borderTopColor: "transparent", // remove top border
-          height: 65 + insets.bottom, // raise tab bar above home button
-          paddingBottom: insets.bottom + 8, // add safe area padding
-          paddingTop: 8,
-          position: "absolute", // optional: makes it float above home indicator
-        },
+      headerShown: false,
+      tabBarActiveTintColor: activeColor,
+      tabBarInactiveTintColor: inactiveColor,
+      tabBarStyle: {
+        backgroundColor: "#FFFDD0", // cream
+        borderTopColor: "transparent", // remove top border
+        height: 65 + insets.bottom, // raise tab bar above home button
+        paddingBottom: insets.bottom + 8, // add safe area padding
+        paddingTop: 8,
+        position: "absolute", // optional: makes it float above home indicator
+      },
       }}
     >
       <Tabs.Screen
-        name="home"
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="home" color={color} size={size} />
-          ),
-        }}
+      name="home"
+      options={{
+        tabBarIcon: ({ color, size }) => (
+        <Ionicons name="home" color={color} size={size} />
+        ),
+      }}
       />
       <Tabs.Screen
-        name="discover"
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="calendar-number" color={color} size={size} />
-          ),
-        }}
+      name="discover"
+      options={{
+        tabBarIcon: ({ color, size }) => (
+        <Ionicons name="calendar-number" color={color} size={size} />
+        ),
+      }}
       />
       <Tabs.Screen
-        name="friends"
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="people" color={color} size={size} />
-          ),
-        }}
+      name="friends"
+      options={{
+        tabBarIcon: ({ color, size }) => (
+        <Ionicons name="people" color={color} size={size} />
+        ),
+      }}
       />
       <Tabs.Screen
-        name="alerts"
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="notifications" color={color} size={size} />
-          ),
-        }}
+      name="alerts"
+      options={{
+        tabBarIcon: ({ color, size }) => (
+        <Ionicons name="notifications" color={color} size={size} />
+        ),
+      }}
       />
       <Tabs.Screen
-        name="profile"
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="person" color={color} size={size} />
-          ),
-        }}
+      name="profile"
+      options={{
+        tabBarIcon: ({ color, size }) => (
+        <Ionicons name="person" color={color} size={size} />
+        ),
+      }}
       />
     </Tabs>
   );
