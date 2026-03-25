@@ -11,65 +11,84 @@ export default function TabsLayout() {
     return <Redirect href="/(auth)" />;
   }
 
-  // Theme colors
-  const inactiveColor = "#9D7EDB"; // lighter purple
-  const activeColor = "#5B21B6"; // darker purple
+  // 🔥 NEW THEME (matches Home & Discover)
+  const inactiveColor = "#9CA3AF"; // gray
+  const activeColor = "#000000"; // black
 
   return (
     <Tabs
       screenOptions={{
-      headerShown: false,
-      tabBarActiveTintColor: activeColor,
-      tabBarInactiveTintColor: inactiveColor,
-      tabBarStyle: {
-        backgroundColor: "#FFFDD0", // cream
-        borderTopColor: "transparent", // remove top border
-        height: 65 + insets.bottom, // raise tab bar above home button
-        paddingBottom: insets.bottom + 8, // add safe area padding
-        paddingTop: 8,
-        position: "absolute", // optional: makes it float above home indicator
-      },
+        headerShown: false,
+
+        // Colors
+        tabBarActiveTintColor: activeColor,
+        tabBarInactiveTintColor: inactiveColor,
+
+        // Style
+        tabBarStyle: {
+          backgroundColor: "#FFFFFF", // white
+          borderTopWidth: 0, // remove line
+          elevation: 0, // remove Android shadow
+          height: 65 + insets.bottom,
+          paddingBottom: insets.bottom + 8,
+          paddingTop: 8,
+        },
+
+        // Label styling
+        tabBarLabelStyle: {
+          fontSize: 12,
+          fontWeight: "600",
+        },
       }}
     >
       <Tabs.Screen
-      name="home"
-      options={{
-        tabBarIcon: ({ color, size }) => (
-        <Ionicons name="home" color={color} size={size} />
-        ),
-      }}
+        name="home"
+        options={{
+          title: "Home",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="home" color={color} size={size} />
+          ),
+        }}
       />
+
       <Tabs.Screen
-      name="discover"
-      options={{
-        tabBarIcon: ({ color, size }) => (
-        <Ionicons name="calendar-number" color={color} size={size} />
-        ),
-      }}
+        name="discover"
+        options={{
+          title: "Discover",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="search" color={color} size={size} />
+          ),
+        }}
       />
+
       <Tabs.Screen
-      name="friends"
-      options={{
-        tabBarIcon: ({ color, size }) => (
-        <Ionicons name="people" color={color} size={size} />
-        ),
-      }}
+        name="friends"
+        options={{
+          title: "Friends",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="people" color={color} size={size} />
+          ),
+        }}
       />
+
       <Tabs.Screen
-      name="alerts"
-      options={{
-        tabBarIcon: ({ color, size }) => (
-        <Ionicons name="notifications" color={color} size={size} />
-        ),
-      }}
+        name="alerts"
+        options={{
+          title: "Alerts",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="notifications" color={color} size={size} />
+          ),
+        }}
       />
+
       <Tabs.Screen
-      name="profile"
-      options={{
-        tabBarIcon: ({ color, size }) => (
-        <Ionicons name="person" color={color} size={size} />
-        ),
-      }}
+        name="profile"
+        options={{
+          title: "Profile",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="person" color={color} size={size} />
+          ),
+        }}
       />
     </Tabs>
   );
