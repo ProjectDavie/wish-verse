@@ -1,5 +1,5 @@
 import { useRouter } from "expo-router";
-import { useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   Animated,
   Dimensions,
@@ -38,7 +38,9 @@ export default function Home() {
     { id: "5", title: "Private Island 🏝️" },
   ];
   const [activeIndex, setActiveIndex] = useState(0);
-  const handleCarouselScroll = (event) => {
+  const handleCarouselScroll = (event: {
+    nativeEvent: { contentOffset: { x: number } };
+  }) => {
     const index = Math.round(event.nativeEvent.contentOffset.x / width);
     setActiveIndex(index);
   };

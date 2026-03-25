@@ -1,28 +1,29 @@
-import { useState } from "react";
-import { Text, TextInput, TouchableOpacity, View } from "react-native";
+import React, { useState } from "react";
+import { Pressable, Text, TextInput, View } from "react-native";
 
-type SearchBarProps = {
+type Props = {
   onSearch: (query: string) => void;
 };
 
-export default function SearchBar({ onSearch }: SearchBarProps) {
+export default function SearchBar({ onSearch }: Props) {
   const [query, setQuery] = useState("");
 
   return (
-    <View className="flex-row items-center bg-white rounded-xl shadow px-4 py-2 mb-6">
+    <View className="flex-row items-center bg-gray-100 rounded-2xl px-3 py-2">
       <TextInput
         value={query}
         onChangeText={setQuery}
         placeholder="Search wishlists..."
-        className="flex-1 text-gray-700 text-base"
-        placeholderTextColor="#A3AED0"
+        placeholderTextColor="#9CA3AF"
+        className="flex-1 text-black text-base px-2"
       />
-      <TouchableOpacity
+
+      <Pressable
         onPress={() => onSearch(query)}
-        className="bg-purple-600 px-4 py-2 rounded-lg ml-2"
+        className="bg-black px-4 py-2 rounded-xl"
       >
         <Text className="text-white font-semibold">Search</Text>
-      </TouchableOpacity>
+      </Pressable>
     </View>
   );
 }
