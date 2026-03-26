@@ -1,53 +1,51 @@
 import { useRouter } from "expo-router";
-import { useRef } from "react";
+import React from "react";
 import { Animated, Pressable, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-export default function TopHeader() {
-  const scrollY = useRef(new Animated.Value(0)).current;
+type Props = {
+  scrollY: Animated.Value; // Pass scrollY to animate the profile bubble
+};
+
+export default function TopHeader({ scrollY }: Props) {
   const insets = useSafeAreaInsets();
   const router = useRouter();
 
-  // Header fade animation
-  const titleOpacity = scrollY.interpolate({
-    inputRange: [0, 120],
-    outputRange: [1, 0],
-    extrapolate: "clamp",
-  });
-
-  // Bubble animation
+  // Profile bubble animation
   const bubbleOpacity = scrollY.interpolate({
-    inputRange: [80, 160],
+    inputRange: [50, 120],
     outputRange: [0, 1],
     extrapolate: "clamp",
   });
 
   const bubbleScale = scrollY.interpolate({
-    inputRange: [80, 160],
+    inputRange: [50, 120],
     outputRange: [0.6, 1],
     extrapolate: "clamp",
   });
 
   return (
-    <View className="bg-white">
+    <View
+      style={{
+        paddingTop: insets.top + 16,
+        paddingHorizontal: 20,
+        paddingBottom: 16,
+        zIndex: 50,
+        backgroundColor: "white",
+      }}
+    >
       {/* Big Header */}
-      <Animated.View
-        style={{ opacity: titleOpacity }}
-        className="px-6 pt-24 pb-12 bg-white"
-      >
-        <Text className="text-4xl font-extrabold text-black">Hello User,</Text>
-        <Text className="text-2xl text-black mt-2">Make a wish ✨</Text>
-      </Animated.View>
+      <Text className="text-4xl font-extrabold text-black">Hello User,</Text>
+      <Text className="text-2xl text-black mt-2">Make a wish ✨</Text>
 
       {/* Profile Bubble */}
       <Animated.View
         style={{
           position: "absolute",
-          top: insets.top + 10,
+          top: insets.top + 16,
           right: 20,
           opacity: bubbleOpacity,
           transform: [{ scale: bubbleScale }],
-          zIndex: 50,
         }}
       >
         <Pressable

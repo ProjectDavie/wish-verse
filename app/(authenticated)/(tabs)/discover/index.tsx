@@ -1,10 +1,9 @@
+import PageHeader from "@/components/PageHeader";
 import React, { useState } from "react";
-import { ScrollView, Text, View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { ScrollView, View } from "react-native";
 import SearchBar from "../../../../components/discover/SearchBar";
 
 export default function DiscoverScreen() {
-  const insets = useSafeAreaInsets();
   const [results, setResults] = useState<string[]>([]);
 
   const handleSearch = (query: string) => {
@@ -17,16 +16,7 @@ export default function DiscoverScreen() {
   return (
     <View className="flex-1 bg-white">
       {/* ---------------- HEADER ---------------- */}
-      <View
-        style={{
-          paddingTop: insets.top + 16,
-          paddingHorizontal: 20,
-          paddingBottom: 16,
-        }}
-      >
-        <Text className="text-4xl font-extrabold text-black">Discover</Text>
-        <Text className="text-2xl text-black mt-2">Find new wishes ✨</Text>
-      </View>
+      <PageHeader title="Discover" subtitle="Find new wishes ✨" />
 
       {/* ---------------- CONTENT ---------------- */}
       <ScrollView
