@@ -2,6 +2,7 @@ import { AuthProvider } from "@/context/AuthContext";
 import { Slot } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import "../global.css";
 
 // 🔒 Keep the native splash screen visible
@@ -11,14 +12,16 @@ export default function RootLayout() {
   useEffect(() => {
     const timer = setTimeout(async () => {
       await SplashScreen.hideAsync();
-    }, 5000); // ⏱️ 5 seconds splash
+    }, 5000);
 
     return () => clearTimeout(timer);
   }, []);
 
   return (
-    <AuthProvider>
-      <Slot />
-    </AuthProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <AuthProvider>
+        <Slot />
+      </AuthProvider>
+    </GestureHandlerRootView>
   );
 }

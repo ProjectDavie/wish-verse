@@ -1,113 +1,59 @@
-import React from "react";
-import { Dimensions, Pressable, Text, View } from "react-native";
-import Animated, {
-  useAnimatedStyle,
-  useSharedValue,
-  withRepeat,
-  withSequence,
-  withSpring,
-  withTiming,
-} from "react-native-reanimated";
+import { useAuth } from "@/context/AuthContext";
+import { LinearGradient } from "expo-linear-gradient";
+import { useRouter } from "expo-router";
+import { useState } from "react";
+import { Text, TextInput, TouchableOpacity } from "react-native";
 
-const { width } = Dimensions.get("window");
+export default function LoginScreen() {
+  const { login } = useAuth();
+  const router = useRouter();
 
-export default function ReanimatedTestScreen() {
-  const translateX = useSharedValue(0);
-  const scale = useSharedValue(1);
-  const rotate = useSharedValue(0);
-  const opacity = useSharedValue(1);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  // Animated style
-  const animatedStyle = useAnimatedStyle(() => {
-    return {
-      transform: [
-        { translateX: translateX.value },
-        { scale: scale.value },
-        { rotate: `${rotate.value}deg` },
-      ],
-      opacity: opacity.value,
-    };
-  });
+  const handleLogin = () => {
+    // mock auth for now
+    login(email || "test@wishverse.app");
+  };
 
   return (
-    <View className="flex-1 justify-center items-center bg-white gap-4">
-      {/* Animated Box */}
-      <Animated.View
-        style={animatedStyle}
-        className="w-24 h-24 bg-blue-500 rounded-2xl"
+    <LinearGradient
+      colors={["#5B21B6", "#6D28D9", "#7C3AED"]}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 0, y: 1 }}
+      className="flex-1 justify-center px-6"
+    >
+      <Text className="text-3xl font-extrabold text-white text-center mb-8">
+        Wish-Verse ✨
+      </Text>
+
+      <TextInput
+        placeholder="Email"
+        placeholderTextColor="#ddd"
+        value={email}
+        onChangeText={setEmail}
+        className="h-12 border border-white/50 rounded-lg px-4 text-white mb-4"
       />
 
-      {/* Buttons */}
-      <Pressable
-        onPress={() => {
-          translateX.value = withSpring(width * 0.5 - 50);
-        }}
-        className="bg-black px-4 py-2 rounded-lg"
-      >
-        <Text className="text-white">Slide</Text>
-      </Pressable>
+      <TextInput
+        placeholder="Password"
+        placeholderTextColor="#ddd"
+        secureTextEntry
+        value={password}
+        onChangeText={setPassword}
+        className="h-12 border border-white/50 rounded-lg px-4 text-white mb-4"
+      />
 
-      <Pressable
-        onPress={() => {
-          scale.value = withSpring(1.5);
-        }}
-        className="bg-black px-4 py-2 rounded-lg"
+      <TouchableOpacity
+        onPress={handleLogin}
+        className="h-12 bg-white rounded-lg justify-center items-center mt-2"
       >
-        <Text className="text-white">Scale</Text>
-      </Pressable>
+        <Text className="text-purple-900 font-semibold text-base">Login</Text>
+      </TouchableOpacity>
 
-      <Pressable
-        onPress={() => {
-          rotate.value = withTiming(360, { duration: 1000 });
-        }}
-        className="bg-black px-4 py-2 rounded-lg"
-      >
-        <Text className="text-white">Rotate</Text>
-      </Pressable>
-
-      <Pressable
-        onPress={() => {
-          opacity.value = withTiming(0.2, { duration: 500 });
-        }}
-        className="bg-black px-4 py-2 rounded-lg"
-      >
-        <Text className="text-white">Fade</Text>
-      </Pressable>
-
-      <Pressable
-        onPress={() => {
-          translateX.value = withSequence(
-            withTiming(100),
-            withTiming(-100),
-            withTiming(0),
-          );
-        }}
-        className="bg-black px-4 py-2 rounded-lg"
-      >
-        <Text className="text-white">Sequence</Text>
-      </Pressable>
-
-      <Pressable
-        onPress={() => {
-          scale.value = withRepeat(withTiming(1.5), 4, true);
-        }}
-        className="bg-black px-4 py-2 rounded-lg"
-      >
-        <Text className="text-white">Repeat</Text>
-      </Pressable>
-
-      <Pressable
-        onPress={() => {
-          // reset everything
-          translateX.value = withSpring(0);
-          scale.value = withSpring(1);
-          rotate.value = withTiming(0);
-          opacity.value = withTiming(1);
-        }}
-        className="bg-red-500 px-4 py-2 rounded-lg mt-4"
-      >
-        <Text className="text-white">Reset</Text>
-      </Pressable>
-    </View>
+      <TouchableOpacity onPress={() => router.push("/(auth)/signup")}>
+        <Text className="text-white text-center mt-4">Create an account</Text>
+      </TouchableOpacity>
+    </LinearGradient>
   );
 }
