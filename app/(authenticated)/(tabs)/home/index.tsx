@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { Animated, Dimensions, FlatList, Text, View } from "react-native";
 
 import TopHeader from "@/components/home/TopHeader";
+import React from "react";
 
 const { width } = Dimensions.get("window");
 
@@ -74,13 +75,6 @@ export default function Home() {
             ))}
           </View>
         </View>
-
-        {/* Trending */}
-        <View className="bg-white px-6 py-4">
-          <Text className="text-xl font-bold text-black">Trending</Text>
-        </View>
-
-        <View className="h-[600px] bg-gray-100 mx-6 rounded-2xl mb-10" />
       </Animated.ScrollView>
     </View>
   );

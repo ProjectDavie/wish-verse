@@ -1,3 +1,4 @@
+import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 type Props = {
@@ -19,14 +20,14 @@ const styles = StyleSheet.create({
     padding: 14,
     borderRadius: 8,
     backgroundColor: "#e8f0ff",
-    marginBottom: 10
+    marginBottom: 10,
   },
   title: {
     fontSize: 16,
-    fontWeight: "600"
+    fontWeight: "600",
   },
   status: {
     marginTop: 4,
-    color: "#555"
-  }
+    color: "#555",
+  },
 });

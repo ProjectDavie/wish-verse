@@ -1,3 +1,4 @@
+import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 type Props = {
@@ -14,10 +15,10 @@ export default function SectionHeader({ title }: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    marginVertical: 12
+    marginVertical: 12,
   },
   text: {
     fontSize: 20,
-    fontWeight: "600"
-  }
+    fontWeight: "600",
+  },
 });
