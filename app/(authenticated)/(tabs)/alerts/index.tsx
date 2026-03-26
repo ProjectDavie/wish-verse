@@ -1,76 +1,56 @@
+import PageHeader from "@/components/PageHeader";
+import React, { useState } from "react";
 import { ScrollView, Text, View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import AlertCard from "../../../../components/alerts/AlertCard";
+
+const INITIAL_ALERTS = [
+  { id: 1, title: "Emergency Call", description: "Fire reported in Downtown" },
+  {
+    id: 2,
+    title: "New Message",
+    description: "Responder assigned to your request",
+  },
+  { id: 3, title: "System Update", description: "App updated successfully" },
+  {
+    id: 4,
+    title: "Maintenance",
+    description: "Scheduled maintenance at 10 PM",
+  },
+];
 
 export default function AlertsScreen() {
-  const insets = useSafeAreaInsets();
-
-  // Dummy alerts data
-  const alerts = [
-    {
-      id: 1,
-      title: "New Feature Release",
-      description: "WishVerse v2.5 is now live with exciting updates!",
-      time: "2h ago",
-    },
-    {
-      id: 2,
-      title: "System Maintenance",
-      description:
-        "Scheduled maintenance on February 5th from 12:00 - 14:00 UTC.",
-      time: "1d ago",
-    },
-    {
-      id: 3,
-      title: "Follower Milestone",
-      description:
-        "You reached 1,200 followers! Keep sharing your creations ✨",
-      time: "3d ago",
-    },
-  ];
+  const [alerts, setAlerts] = useState(INITIAL_ALERTS);
 
   return (
-    <View className="flex-1 bg-purple-50">
+    <View className="flex-1 bg-white">
+      {/* Header */}
+      <PageHeader
+        title="Alerts"
+        subtitle="Stay updated with your notifications"
+      />
+
+      {/* Scrollable Content */}
       <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{
-          paddingTop: insets.top + 32,
-          paddingBottom: insets.bottom + 40,
-          paddingHorizontal: 16,
-        }}
+        contentContainerStyle={{ paddingBottom: 40, paddingHorizontal: 20 }}
       >
-        {/* Header */}
-        <View className="mb-8">
-          <Text className="text-purple-900 text-3xl font-extrabold">
-            Alerts
-          </Text>
-          <Text className="text-purple-500 text-sm mt-1">
-            Stay updated with the latest notifications
-          </Text>
-        </View>
-
-        {/* Alerts List */}
-        <View className="space-y-4">
+        <View className="space-y-4 mt-4">
           {alerts.map((alert) => (
-            <AlertCard
+            <View
               key={alert.id}
-              title={alert.title}
-              description={alert.description}
-              time={alert.time}
-            />
+              className="bg-gray-100 rounded-2xl p-4 shadow-sm"
+            >
+              <Text className="text-lg font-semibold text-black">
+                {alert.title}
+              </Text>
+              <Text className="text-gray-700 mt-1">{alert.description}</Text>
+            </View>
           ))}
+
+          {alerts.length === 0 && (
+            <View className="mt-10 items-center">
+              <Text className="text-gray-400">No alerts at the moment</Text>
+            </View>
+          )}
         </View>
-
-        {/* No Alerts Placeholder */}
-        {alerts.length === 0 && (
-          <View className="mt-16 items-center">
-            <Text className="text-purple-500 text-lg">
-              No alerts at the moment
-            </Text>
-          </View>
-        )}
-
-        <View className="h-16" />
       </ScrollView>
     </View>
   );
