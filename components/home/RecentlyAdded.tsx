@@ -1,45 +1,56 @@
+import { useRouter } from "expo-router";
 import React, { useState } from "react";
-import { Dimensions, FlatList, Text, View } from "react-native";
+import {
+  Dimensions,
+  FlatList,
+  Image,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 const { width } = Dimensions.get("window");
 
-interface CarouselItem {
+interface Product {
   id: string;
-  title: string;
+  image?: string;
+  details: string;
 }
 
-// Example: this can come from props, state, or API
-const savedWishes: CarouselItem[] = [
-  // Uncomment to test with wishes
-  // { id: "1", title: "Trip to Japan 🇯🇵" },
-  // { id: "2", title: "MacBook Pro 💻" },
-];
+interface RecentlyAddedProps {
+  savedWishes: Product[];
+}
 
-export default function RecentlyAdded() {
+export default function RecentlyAdded({ savedWishes }: RecentlyAddedProps) {
+  const router = useRouter();
   const [activeIndex, setActiveIndex] = useState(0);
 
   const wishesToShow =
     savedWishes.length > 0
       ? savedWishes
-      : [{ id: "0", title: "No recent wishes" }];
+      : [{ id: "0", details: "No recent wishes" }];
 
-  const handleCarouselScroll = (event: {
-    nativeEvent: { contentOffset: { x: number } };
-  }) => {
+  const handleCardPress = (item: Product) => {
+    if (item.id === "0") return;
+    router.push({
+      pathname: "/(authenticated)/(tabs)/home/[id]",
+      params: { product: item },
+    });
+  };
+
+  const handleCarouselScroll = (event: any) => {
     const index = Math.round(event.nativeEvent.contentOffset.x / width);
     setActiveIndex(index);
   };
 
   return (
     <View>
-      {/* Header */}
-      <View style={{ paddingHorizontal: 24, paddingVertical: 16 }}>
-        <Text style={{ fontSize: 20, fontWeight: "bold", color: "black" }}>
+      <View className="px-6 py-4">
+        <Text className="text-xl font-bold text-black">
           Recently Added ({savedWishes.length})
         </Text>
       </View>
 
-      {/* Carousel */}
       <FlatList
         data={wishesToShow}
         horizontal
@@ -48,45 +59,42 @@ export default function RecentlyAdded() {
         keyExtractor={(item) => item.id}
         onMomentumScrollEnd={handleCarouselScroll}
         renderItem={({ item }) => (
-          <View style={{ width, paddingHorizontal: 24 }}>
-            <View
-              style={{
-                height: 400,
-                borderRadius: 24,
-                backgroundColor: "#E5E7EB",
-                justifyContent: "center", // center text if no wishes
-                alignItems: "center",
-                padding: 24,
-              }}
-            >
-              <Text style={{ fontSize: 18, fontWeight: "600", color: "black" }}>
-                {item.title}
-              </Text>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={() => handleCardPress(item)}
+            style={{ width, paddingHorizontal: 24 }}
+          >
+            <View className="h-96 rounded-3xl bg-gray-100 overflow-hidden justify-center items-center">
+              {item.image ? (
+                <Image
+                  source={{ uri: item.image }}
+                  className="w-full h-full rounded-3xl"
+                  resizeMode="cover"
+                />
+              ) : (
+                <Text className="text-black text-lg font-semibold">
+                  {item.details}
+                </Text>
+              )}
             </View>
-          </View>
+
+            {item.image && (
+              <Text className="mt-2 text-black text-base font-medium">
+                {item.details}
+              </Text>
+            )}
+          </TouchableOpacity>
         )}
       />
 
-      {/* Carousel Dots */}
       {savedWishes.length > 0 && (
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "center",
-            marginTop: 12,
-            marginBottom: 24,
-            gap: 8,
-          }}
-        >
+        <View className="flex-row justify-center mt-3 mb-6 space-x-2">
           {wishesToShow.map((_, index) => (
             <View
               key={index}
-              style={{
-                height: 8,
-                borderRadius: 4,
-                width: activeIndex === index ? 24 : 8,
-                backgroundColor: activeIndex === index ? "black" : "#D1D5DB",
-              }}
+              className={`h-2 rounded-full ${
+                activeIndex === index ? "w-6 bg-black" : "w-2 bg-gray-300"
+              }`}
             />
           ))}
         </View>
