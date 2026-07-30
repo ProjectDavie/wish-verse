@@ -12,8 +12,9 @@ export default function LoginScreen() {
   const [password, setPassword] = useState("");
 
   const handleLogin = () => {
-    // mock auth for now
-    login(email || "test@wishverse.app");
+    const nextEmail = email || "test@wishverse.app";
+    login(nextEmail);
+    router.replace("/(authenticated)/(tabs)/home");
   };
 
   return (
